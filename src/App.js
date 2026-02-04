@@ -1,25 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
 
+import './App.scss';
+
+import MyComponent from './components/MyConponent';
+//1 dấu chấm -> chùng bậc thư mục
+//2 dấu chấm -> lùi ra 1 bậc
+import React from 'react';
+// class App extends React.Component {
+
+//   render() {
+//     return (
+//       <MyComponent></MyComponent>
+//     );
+//   }
+// }
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
+    <div className="app-container">
+      Hello world
+      <button>Test</button>
     </div>
   );
 }
-
 export default App;
