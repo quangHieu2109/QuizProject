@@ -24,19 +24,14 @@ const ManageUser = (props) => {
     const [listUser, setListUser] = useState([
     ])
     const fetchListUser = async () => {
-        console.log("fetchListUser is called ....")
         let res = await getAllUser();
-        // console.log(res)
         if (res && res.EC === 0) {
             setListUser(res.DT)
         }
     }
     const fetchListUserWithPaginate = async (page) => {
-        console.log("fetchListUserWithPaginate is called ....")
         let res = await getUserWithPaginate(page, LIMIT_USER);
-        // console.log(res)
         if (res && res.EC === 0) {
-            console.log("res.DT= ", res.DT)
             setListUser(res.DT.users)
             setPageCount(res.DT.totalPages)
         }
@@ -53,12 +48,10 @@ const ManageUser = (props) => {
     const handleClickBtnVew = (user) => {
         setShowModalViewUser(true);
         setDataView(user);
-        // console.log('user update: ', user)
     }
     const handleClickBtnUpdate = (user) => {
         setShowModalUpdateUser(true);
         setDataUpdate(user);
-        console.log('user update: ', user)
     }
     const handleClickBtnDelete = (user) => {
         setShowModalDeleteUser(true);

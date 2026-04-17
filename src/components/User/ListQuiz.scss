@@ -1,0 +1,40 @@
+.list-quiz-container {
+    display: flex;
+    gap: 50px;
+
+    .card {
+        .card-img {
+            height: 50%;
+            /* chiếu cao của khung theo parent */
+            width: 100%;
+            display: flex;
+            /* nếu muốn căn giữa, giữ; nếu không, có thể bỏ */
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            /* tránh overflow khi dùng object-fit: cover */
+
+            img {
+                width: 100%;
+                height: auto;
+                /* giữ tỉ lệ */
+                max-height: 100%;
+                /* không vượt quá khung (.card-img) */
+                display: block;
+                object-fit: contain;
+                /* hoặc cover nếu muốn lấp đầy và cắt bớt */
+            }
+        }
+
+        .card-body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+
+            h5 {
+                width: 100%;
+            }
+        }
+    }
+}

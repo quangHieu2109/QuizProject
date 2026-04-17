@@ -1,33 +1,26 @@
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import { deleteUser } from '../../../services/apiService'
 import { toast } from "react-toastify";
 import { useEffect, useState } from 'react';
+import { deleteQuizForAdmin } from '../../../../services/apiService';
 
-const DeleteUserModal = (props) => {
-    const { show, setShow, dataDelete, resetDeleteData, fetchListUser, currentPage, setCurrentPage } = props
-    const [isUpdateListUser, setUpdateListUser] = useState(false)
+const DeleteQuizModal = (props) => {
+    const { show, setShow, deleteData, resetDeleteData, fetchListQuizzes } = props
+    // const [isUpdateListUser, setUpdateListUser] = useState(false)
     const handleClose = () => {
         resetDeleteData();
         setShow(false);
-        setUpdateListUser(false)
+        // setUpdateListUser(false)
     }
-    useEffect(() => {
-        const updateUsers = async () => {
-            await fetchListUser();
-        }
-        if (isUpdateListUser) updateUsers();
-    }, [isUpdateListUser]);
 
-    const handleSubmitDeleteUser = async () => {
-        let resDT = await deleteUser(dataDelete.id);
-
+    const handleSubmitDeleteQuiz = async () => {
+        let resDT = await deleteQuizForAdmin(deleteData.id);
+        console.log(">>>> check res delete ", resDT)
         if (resDT && resDT.EC === 0) {
             toast.success(resDT.EM)
             handleClose()
-            setCurrentPage(1)
-            await fetchListUser(1)
-            setUpdateListUser(true)
+            await fetchListQuizzes();
+            // setUpdateListUser(true)
         }
         if (resDT && resDT.EC !== 0) {
             toast.error(resDT.EM)
@@ -45,16 +38,16 @@ const DeleteUserModal = (props) => {
                 </Modal.Header>
 
                 <Modal.Body>
-                    <p>Are you sure to delete this user. email = {dataDelete.email}</p>
+                    <p>Are you sure to delete this quiz. id: {deleteData.id} with name: {deleteData.name} </p>
                 </Modal.Body>
 
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>Cancel</Button>
-                    <Button variant="primary" onClick={handleSubmitDeleteUser}>Confirm</Button>
+                    <Button variant="primary" onClick={() => handleSubmitDeleteQuiz()}>Confirm</Button>
                 </Modal.Footer>
             </Modal>
         </div>
     );
 }
 
-export default DeleteUserModal;
+export default DeleteQuizModal;

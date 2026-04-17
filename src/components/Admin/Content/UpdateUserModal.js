@@ -10,12 +10,6 @@ import _ from 'lodash'
 const UpdateUserModal = (props) => {
     const { show, setShow, dataUpdate, resetUpdateData, fetchListUser, currentPage, setCurrentPage } = props
     const [isUpdateListUser, setUpdateListUser] = useState(false)
-    // const fetchListUser = props.fetchListUser;
-
-    console.log(">>> check data update: ", dataUpdate)
-
-
-
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [username, setUsername] = useState("")
@@ -25,10 +19,8 @@ const UpdateUserModal = (props) => {
     useEffect(() => {
         if (!_.isEmpty(dataUpdate)) {
             setEmail(dataUpdate.email)
-            // setPassword(datauo)
             setUsername(dataUpdate.username)
             setRole(dataUpdate.role)
-            // setImage('')
             if (dataUpdate.image) {
                 setPreviewImage(`data:image/jpge;base64,${dataUpdate.image}`)
             }
@@ -59,12 +51,10 @@ const UpdateUserModal = (props) => {
     };
 
     const handleUploadImage = (event) => {
-        // console.log(event.target.files[0])
         if (event.target && event.target.files && event.target.files[0])
             setPreviewImage(URL.createObjectURL(event.target.files[0]))
         setImage(event.target.files[0])
         // else setPreviewImage(null)
-        console.log(previewImage)
     }
     const handleSubmitUpdateUser = async () => {
         setUpdateListUser(false)
@@ -81,11 +71,9 @@ const UpdateUserModal = (props) => {
             handleClose()
             setCurrentPage(currentPage)
             await fetchListUser(currentPage);
-            console.log(">>> check updateListUser", isUpdateListUser)
         }
         if (resDT && resDT.EC !== 0) {
             toast.error(resDT.EM)
-            // handleClose()
         }
     }
     const [previewImage, setPreviewImage] = useState("")

@@ -49,23 +49,19 @@ const AddUserModal = (props) => {
     // };
 
     const handleUploadImage = (event) => {
-        // console.log(event.target.files[0])
         if (event.target && event.target.files && event.target.files[0])
             setPreviewImage(URL.createObjectURL(event.target.files[0]))
         setImage(event.target.files[0])
         // else setPreviewImage(null)
-        console.log(previewImage)
     }
     const handleSubmitCreateUser = async () => {
         setUpdateListUser(false)
         if (!validateEmail(email)) {
             toast.error("Invalid email!")
-            // alert("Invalid email!")
             return;
         }
         if (!password) {
             toast.error("Invalid password!");
-            // alert("Invalid email!")
             return;
         }
 
@@ -76,12 +72,10 @@ const AddUserModal = (props) => {
             // setUpdateListUser(true)
             setCurrentPage(1);
             fetchListUser(1)
-            console.log(">>> check updateListUser", isUpdateListUser)
             handleClose()
         }
         if (resDT && resDT.EC !== 0) {
             toast.error(resDT.EM)
-            // handleClose()
         }
     }
     const [previewImage, setPreviewImage] = useState("")

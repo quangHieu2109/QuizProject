@@ -3,20 +3,28 @@ import "./Auth.scss"
 import { useNavigate } from "react-router-dom";
 import { postLogin } from "../../services/apiService";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { doLogin } from "../../redux/reducer/action/userAction";
+import { ImSpinner10 } from "react-icons/im";
 const Login = () => {
     const [email, setEmail] = useState("");
     const [pasword, setPassword] = useState("");
+    const [isLoading, setIsLoading] = useState(false)
+    const dispath = useDispatch();
     const handleLogin = async () => {
         //validate
-
+        setIsLoading(true);
         //all api
         let data = await postLogin(email, pasword);
         if (data && data.EC === 0) {
+            dispath(doLogin(data))
             toast.success(data.EM)
+            setIsLoading(false)
             navigate("/")
         }
         if (data && data.EC !== 0) {
             toast.error(data.EM)
+            setIsLoading(false)
         }
     }
     const navigate = useNavigate();
@@ -55,7 +63,11 @@ const Login = () => {
                 <div>
                     <button
                         className="btn-login"
-                        onClick={() => handleLogin()}>Login to HoiDanIT</button>
+                        disabled={isLoading}
+                        onClick={() => handleLogin()}>
+                        {isLoading && <ImSpinner10 className="loader-icon" />}
+                        <span>Login to HoiDanIT</span>
+                    </button>
                 </div>
                 <div className="text-center" >
                     <span className="back" onClick={() => navigate("/")}> &#60;&#60; Go to Hommepage</span>
