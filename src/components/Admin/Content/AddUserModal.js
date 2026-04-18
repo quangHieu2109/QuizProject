@@ -1,25 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Ensure this is imported
-import AVT from '../../../assets/avt.jpg'
 import './ManageUser.scss'
 import { FcPlus } from 'react-icons/fc'
-import axios from 'axios';
 import { toast } from "react-toastify";
 import { postCreateNewUser } from '../../../services/apiService.js'
 import { validateEmail } from '../../../utils/validate.js';
 const AddUserModal = (props) => {
     const { show, setShow } = props
-    const [isUpdateListUser, setUpdateListUser] = useState(false)
     const fetchListUser = props.fetchListUser;
     const setCurrentPage = props.setCurrentPage;
-    // useEffect(() => {
-    //     const fetchListUser = async () => {
-    //         await fetchListUser();
-    //     }
-    //     if (isUpdateListUser) fetchListUser();
-    // }, [isUpdateListUser]);
     const handleClose = () => {
         setShow(false)
         setEmail('')
@@ -40,14 +31,6 @@ const AddUserModal = (props) => {
     const [image, setImage] = useState("")
     const [role, setRole] = useState("USER")
 
-    // const validateEmail = (email) => {
-    //     return String(email)
-    //         .toLowerCase()
-    //         .match(
-    //             /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    //         );
-    // };
-
     const handleUploadImage = (event) => {
         if (event.target && event.target.files && event.target.files[0])
             setPreviewImage(URL.createObjectURL(event.target.files[0]))
@@ -55,7 +38,6 @@ const AddUserModal = (props) => {
         // else setPreviewImage(null)
     }
     const handleSubmitCreateUser = async () => {
-        setUpdateListUser(false)
         if (!validateEmail(email)) {
             toast.error("Invalid email!")
             return;
@@ -81,9 +63,6 @@ const AddUserModal = (props) => {
     const [previewImage, setPreviewImage] = useState("")
     return (
         <>
-            {/* <Button variant="primary" onClick={handleShow}>
-                Launch demo modal
-            </Button> */}
 
             <Modal show={show} onHide={handleClose} size='xl' backdrop='static' className='modal-add-user'>
                 <Modal.Header closeButton>

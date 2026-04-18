@@ -1,7 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
-import ReactPaginate from 'react-paginate';
-
+import ReactPaginate from "react-paginate";
 
 const TableUserPaginate = (props) => {
     const fetchListUserWithPaginate = props.fetchListUserWithPaginate;

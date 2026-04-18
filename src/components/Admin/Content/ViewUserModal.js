@@ -3,17 +3,15 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Ensure this is imported
 import './ManageUser.scss'
-import { FcPlus } from 'react-icons/fc'
-import { toast } from "react-toastify";
-import { postCreateNewUser, putUpdateUser } from '../../../services/apiService.js'
 import _ from 'lodash'
 const ViewUserModal = (props) => {
-    const { show, setShow, dataView, resetViewData, fetchListUser } = props
+    const { show, setShow, dataView, resetViewData } = props
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [username, setUsername] = useState("")
-    const [image, setImage] = useState("")
     const [role, setRole] = useState("USER")
+    const [previewImage, setPreviewImage] = useState("")
+
     useEffect(() => {
         if (!_.isEmpty(dataView)) {
             setEmail(dataView.email)
@@ -33,11 +31,9 @@ const ViewUserModal = (props) => {
         setPassword('')
         setUsername('')
         setRole('USER')
-        setImage('')
         setPreviewImage('')
         resetViewData()
     };
-    const [previewImage, setPreviewImage] = useState("")
     return (
         <>
             {/* <Button variant="primary" onClick={handleShow}>
@@ -95,7 +91,7 @@ const ViewUserModal = (props) => {
                         </div> */}
                         <div className='col-md-12 img-preview'>
                             {previewImage ?
-                                <img src={previewImage} /> :
+                                <image src={previewImage} alt='Preview image' /> :
                                 <span>Privew Image</span>}
                         </div>
                     </form>

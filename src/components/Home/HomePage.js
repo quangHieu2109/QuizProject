@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import videoHomePage from "../../assets/video-homepage.mp4"
 import { useNavigate } from "react-router-dom";
 const HomePage = (props) => {
-    const account = useSelector(state => state.user.account);
+    // const account = useSelector(state => state.user.account);
     const isAuthenticated = useSelector(state => state.user.isAuthenticated)
     const navigate = useNavigate();
     return (

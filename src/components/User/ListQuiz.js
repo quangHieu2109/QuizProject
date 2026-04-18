@@ -10,7 +10,7 @@ const ListQuiz = (props) => {
     }, []);
     const getQuizsData = async () => {
         const res = await getQuizsByUser();
-        if (res.EC == 0) {
+        if (+res.EC === 0) {
             setQuizs(res.DT)
         }
     }

@@ -3,10 +3,10 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { useSelector } from 'react-redux';
-import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 const Header = () => {
-    const account = useSelector(state => state.user.account);
+    // const account = useSelector(state => state.user.account);
     const isAuthenticated = useSelector(state => state.user.isAuthenticated)
     const navigate = useNavigate();
     const handleLogin = () => {

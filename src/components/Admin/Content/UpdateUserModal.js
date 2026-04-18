@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'; // Ensure this is imported
 import './ManageUser.scss'
 import { FcPlus } from 'react-icons/fc'
 import { toast } from "react-toastify";
-import { postCreateNewUser, putUpdateUser } from '../../../services/apiService.js'
+import { putUpdateUser } from '../../../services/apiService.js'
 import _ from 'lodash'
 const UpdateUserModal = (props) => {
     const { show, setShow, dataUpdate, resetUpdateData, fetchListUser, currentPage, setCurrentPage } = props
@@ -137,7 +137,7 @@ const UpdateUserModal = (props) => {
                         </div>
                         <div className='col-md-12 img-preview'>
                             {previewImage ?
-                                <img src={previewImage} /> :
+                                <image src={previewImage} /> :
                                 <span>Privew Image</span>}
                         </div>
                     </form>

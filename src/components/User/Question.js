@@ -1,4 +1,4 @@
-import _, { assignWith } from 'lodash'
+import _ from 'lodash'
 
 const Question = (props) => {
     const { index, data } = props;
