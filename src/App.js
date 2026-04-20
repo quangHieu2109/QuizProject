@@ -5,6 +5,8 @@ import { Link, Outlet } from 'react-router-dom';
 //1 dấu chấm -> chùng bậc thư mục
 //2 dấu chấm -> lùi ra 1 bậc
 import React from 'react';
+import PerfectScrollbar from 'react-perfect-scrollbar'
+
 // class App extends React.Component {
 
 //   render() {
@@ -22,12 +24,18 @@ function App() {
       </div>
       <div className='main-container'>
         <div className='sidenav-container'></div>
-        <div className='app-content'></div>
+        <div className='app-content'>
+          <PerfectScrollbar>
+            {/* <div className="admin-main"> */}
+            <Outlet />
+            {/* </div> */}
+          </PerfectScrollbar>
+          {/* Outlet là nơi hiển thị element con (Route con) 
+      sẽ bị thay thế thì thằng con được render*/}
+        </div>
       </div>
 
-      <Outlet />
-      {/* Outlet là nơi hiển thị element con (Route con) 
-      sẽ bị thay thế thì thằng con được render*/}
+
     </div>
   );
 }

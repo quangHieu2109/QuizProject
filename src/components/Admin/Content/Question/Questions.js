@@ -188,7 +188,6 @@ const Questions = (props) => {
             setQuestions(questionsClone);
             return;
         }
-        return;
         //submit question
         //call nhiều API cùng lúc, k lưu theo thứ tự
         // await Promise.all(questions.map(async (question) => {

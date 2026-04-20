@@ -1,7 +1,7 @@
 import Select from 'react-select';
 import { useState, useEffect } from 'react';
-import { getAllQuizForAdmin, getAllUser } from '../../../../services/apiService';
-import { toast } from 'react-toastify';
+import { getAllQuizForAdmin, getAllUser, postAssignQuizToUser } from '../../../../services/apiService';
+import { toast } from "react-toastify";
 const AssignQuiz = (props) => {
     const [selectedQuiz, setSelectedQuiz] = useState({});
     const [listQuizzes, setListQuizzes] = useState([]);
@@ -17,7 +17,7 @@ const AssignQuiz = (props) => {
             let newQuizzes = res.DT.map(item => {
                 return {
                     value: item.id,
-                    label: `${item.id} - ${item.description}`
+                    label: `${item.id} - ${item.name}`
                 }
             })
             setListQuizzes(newQuizzes);
@@ -40,6 +40,14 @@ const AssignQuiz = (props) => {
             toast.error(res.EM);
         }
     }
+    const handleAssignQuiz = async () => {
+        let res = await postAssignQuizToUser(+selectedQuiz.value, +selectedUser.value);
+        if (res && res.EC === 0) {
+            toast.success(res.EM)
+        } else {
+            toast.error(res.EM);
+        }
+    }
     return (
 
         <div className="assign-quiz-container row">
@@ -56,7 +64,7 @@ const AssignQuiz = (props) => {
                 />
             </div>
             <div className="col-6 form-group">
-                <label className='form-label'>Select quiz</label>
+                <label className='form-label'>Select user</label>
                 <Select
 
                     defaultValue={selectedUser}
@@ -68,7 +76,10 @@ const AssignQuiz = (props) => {
                 />
             </div>
             <div>
-                <button className="btn btn-warning mt-3">Assign</button>
+                <button
+                    className="btn btn-warning mt-3"
+                    onClick={() => handleAssignQuiz()}
+                >Assign</button>
             </div>
         </div>
     )

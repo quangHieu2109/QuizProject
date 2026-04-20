@@ -7,15 +7,10 @@ import { LuImagePlus } from "react-icons/lu";
 import { v4 as uuidv4 } from 'uuid';
 import _ from 'lodash';
 import Lightbox from "react-awesome-lightbox";
-import { getAllQuizForAdmin, postCreateNewAnsweForQuestion, postCreateNewQuestionForQuiz } from '../../../../services/apiService';
+import { getAllQuizForAdmin, getQuizWithQA, postCreateNewAnsweForQuestion, postCreateNewQuestionForQuiz } from '../../../../services/apiService';
 import { toast } from 'react-toastify';
 
 const QuizQA = (props) => {
-    const options = [
-        { value: 'chocolate', label: 'Chocolate' },
-        { value: 'strawberry', label: 'Strawberry' },
-        { value: 'vanilla', label: 'Vanilla' },
-    ];
     const [selectedQuiz, setSelectedQuiz] = useState({});
     const [selectedFile, setSelectedFile] = useState(null)
     const [questions, setQuestions] = useState(
@@ -50,6 +45,11 @@ const QuizQA = (props) => {
     useEffect(() => {
         fetchListQuiz();
     }, [])
+    useEffect(() => {
+        if (selectedQuiz && selectedQuiz.value) {
+            fetchQuizWithQA();
+        }
+    }, [selectedQuiz])
     const fetchListQuiz = async () => {
         const res = await getAllQuizForAdmin();
         if (res && res.EC === 0) {
@@ -63,6 +63,25 @@ const QuizQA = (props) => {
         } else {
             toast.error(res.EM);
         }
+    }
+    const fetchQuizWithQA = async () => {
+        let res = await getQuizWithQA(selectedQuiz.value);
+        if (res && res.EC === 0) {
+            setQuestions(res.DT.qa);
+        }
+        const newQA = [];
+        for (let i = 0; i < res.DT.qa.length; i++) {
+            let q = res.DT.qa[i];
+            if (q.imageFile) {
+                let fileName = `Question-${q.id}.png`;
+                q.imageName = fileName
+                q.imageFile = await urlToFile(`data:image/png;base64,${q.imageFile}`, fileName, `image/png`);
+
+            }
+            newQA.push(q);
+        }
+        setQuestions(newQA)
+        console.log(">>> check res: ", res)
     }
     const handleAddRemoveQuestion = (type, id = "") => {
         if (type === 'ADD') {
@@ -218,6 +237,11 @@ const QuizQA = (props) => {
                 )
             }
         }
+    }
+    const urlToFile = (url, fileName, mimeType) => {
+        return (fetch(url)
+            .then((res) => res.arrayBuffer())
+            .then((buf) => new File([buf], fileName, { type: mimeType })))
     }
     return (
 
