@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 const CountDown = (props) => {
-    const [count, setCount] = useState(300)
+    const [count, setCount] = useState(3000)
     const toHHMMSS = (secs) => {
         const sec_num = parseInt(secs, 10);
         const hours = Math.floor(sec_num / 3600);

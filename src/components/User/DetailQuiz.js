@@ -157,7 +157,10 @@ const DetailQuiz = (props) => {
                 <div className="right-content">
                     <RightContent
                         dataQuiz={dataQuiz}
-                        handleFinish={handleFinish} />
+                        handleFinish={handleFinish}
+                        index={index}
+                        setIndex={setIndex}
+                    />
                 </div>
 
             </div>

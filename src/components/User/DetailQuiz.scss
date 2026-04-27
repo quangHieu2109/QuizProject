@@ -79,6 +79,14 @@
                     border-color: rgba(255, 0, 0, 0.633);
                     color: red;
                 }
+
+                &.answered {
+                    background-color: #c6c6c6;
+                }
+
+                &.selected {
+                    color: red;
+                }
             }
         }
     }
