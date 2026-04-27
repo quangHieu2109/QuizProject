@@ -99,6 +99,9 @@ const postUpsertQA = (data) => {
         ...data
     });
 }
+const logout = (email, refresh_token) => {
+    return axios.post('api/v1/logout', { email, refresh_token })
+}
 export {
     postCreateNewUser,
     getAllUser,
@@ -118,5 +121,6 @@ export {
     postCreateNewAnsweForQuestion,
     postAssignQuizToUser,
     getQuizWithQA,
-    postUpsertQA
+    postUpsertQA,
+    logout
 }

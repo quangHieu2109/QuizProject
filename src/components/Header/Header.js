@@ -2,18 +2,32 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom';
+import { logout } from '../../services/apiService';
+import { toast } from 'react-toastify';
+import { doLogout } from '../../redux/reducer/action/userAction';
 
 const Header = () => {
-    // const account = useSelector(state => state.user.account);
+    const account = useSelector(state => state.user.account);
     const isAuthenticated = useSelector(state => state.user.isAuthenticated)
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const handleLogin = () => {
         navigate("/login");
     }
     const handleRegister = () => {
         navigate("/register");
+    }
+    const handleLogout = async () => {
+        const res = await logout(account.email, account.refresh_token);
+        console.log(res)
+        if (res && res.EC === 0) {
+            dispatch(doLogout())
+            navigate("/login");
+        } else {
+            toast.error(res.EM);
+        }
     }
     return (
         <Navbar expand="lg" className="bg-body-tertiary">
@@ -33,10 +47,12 @@ const Header = () => {
                             isAuthenticated === true ?
                                 <NavDropdown title="Settings" id="basic-nav-dropdown">
 
-                                    <NavDropdown.Item>Logout</NavDropdown.Item>
+
+                                    <NavDropdown.Item >Profile</NavDropdown.Item>
                                     <NavDropdown.Divider />
-                                    <NavDropdown.Item >Profile
-                                    </NavDropdown.Item>
+                                    <NavDropdown.Item
+                                        onClick={() => handleLogout()}
+                                    >Logout</NavDropdown.Item>
                                 </NavDropdown>
                                 :
                                 <>
