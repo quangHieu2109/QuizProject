@@ -26,9 +26,7 @@ function App() {
         <div className='sidenav-container'></div>
         <div className='app-content'>
           <PerfectScrollbar>
-            {/* <div className="admin-main"> */}
             <Outlet />
-            {/* </div> */}
           </PerfectScrollbar>
           {/* Outlet là nơi hiển thị element con (Route con) 
       sẽ bị thay thế thì thằng con được render*/}

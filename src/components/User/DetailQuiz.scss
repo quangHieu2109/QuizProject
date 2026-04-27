@@ -48,5 +48,38 @@
     .right-content {
         width: 30%;
         border: 1px solid green;
+        border-radius: 5px;
+        padding: 20px;
+
+        .main-timer {
+            border-bottom: 1px dashed;
+            padding-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+            padding-top: 10px;
+            font-size: 20px;
+        }
+
+        .main-question {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+
+            .question {
+                border: 2px solid rgba(32, 30, 32, 0.133);
+                height: 40px;
+                width: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                border-radius: 50px;
+
+                &:hover {
+                    border-color: rgba(255, 0, 0, 0.633);
+                    color: red;
+                }
+            }
+        }
     }
 }

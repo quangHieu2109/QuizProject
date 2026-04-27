@@ -7,7 +7,7 @@ import { LuImagePlus } from "react-icons/lu";
 import { v4 as uuidv4 } from 'uuid';
 import _ from 'lodash';
 import Lightbox from "react-awesome-lightbox";
-import { getAllQuizForAdmin, getQuizWithQA, postCreateNewAnsweForQuestion, postCreateNewQuestionForQuiz } from '../../../../services/apiService';
+import { getAllQuizForAdmin, getQuizWithQA, postCreateNewAnsweForQuestion, postCreateNewQuestionForQuiz, postUpsertQA } from '../../../../services/apiService';
 import { toast } from 'react-toastify';
 
 const QuizQA = (props) => {
@@ -74,7 +74,7 @@ const QuizQA = (props) => {
             let q = res.DT.qa[i];
             if (q.imageFile) {
                 let fileName = `Question-${q.id}.png`;
-                q.imageName = fileName
+                q.imageName = fileName``
                 q.imageFile = await urlToFile(`data:image/png;base64,${q.imageFile}`, fileName, `image/png`);
 
             }
@@ -181,15 +181,16 @@ const QuizQA = (props) => {
         //validate question and answer
         let isValid = true;
         let questionsClone = _.cloneDeep(questions)
-        questionLoop:
         for (let i = 0; i < questionsClone.length; i++) {
             let curQues = questionsClone[i];
+            //validate question description
             if (!curQues.description || curQues.description.length === 0) {
                 questionsClone[i].isInvalid = true;
                 // toast.error(`Question ${i + 1} can not empty!`);
                 isValid = false;
                 // break;
             }
+            //Validate answer desctiption
             for (let j = 0; j < curQues.answers.length; j++) {
                 let curAns = curQues.answers[j];
                 if (!curAns.description || curAns.description.length === 0) {
@@ -201,41 +202,28 @@ const QuizQA = (props) => {
             }
 
         }
+        //check valid and notify
         if (!isValid) {
             toast.error(`Answer and question can not empty!`);
 
             setQuestions(questionsClone);
             return;
         }
-        return;
-        //submit question
-        //call nhiều API cùng lúc, k lưu theo thứ tự
-        // await Promise.all(questions.map(async (question) => {
-        //     const q = await postCreateNewQuestionForQuiz(
-        //         +selectedQuiz.value,
-        //         question.description,
-        //         question.imageFile);
-        //     //submit answer
-        //     await Promise.all(question.answers.map(async (answer) => {
-        //         await postCreateNewAnsweForQuestion(answer.description,
-        //             answer.isCorrect,
-        //             q.DT.id
-        //         )
-        //     }))
-        // }))
-        // postCreateNewQuestionForQuiz(quizId, questionDesc, questionImg)
-        //call api lần lượt
-        for (let question of questions) {
-            const q = await postCreateNewQuestionForQuiz(
-                +selectedQuiz.value,
-                question.description,
-                question.imageFile);
-            for (let answer of question.answers) {
-                await postCreateNewAnsweForQuestion(answer.description,
-                    answer.isCorrect,
-                    q.DT.id
-                )
+        //convert image file to base64
+        for (let i = 0; i < questionsClone.length; i++) {
+            if (questionsClone[i].imageFile) {
+                questionsClone[i].imageFile = await toBase64(questionsClone[i].imageFile);
             }
+        }
+        let res = await postUpsertQA({
+            quizId: selectedQuiz.value,
+            questions: questionsClone
+        })
+        if (res && res.EC === 0) {
+            toast.success(res.EM);
+            fetchQuizWithQA();
+        } else {
+            toast.error(res.EM);
         }
     }
     const urlToFile = (url, fileName, mimeType) => {
@@ -243,6 +231,12 @@ const QuizQA = (props) => {
             .then((res) => res.arrayBuffer())
             .then((buf) => new File([buf], fileName, { type: mimeType })))
     }
+    const toBase64 = file => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+    });
     return (
 
         <div className="questions-container">

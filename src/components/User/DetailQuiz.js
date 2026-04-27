@@ -5,6 +5,7 @@ import _ from 'lodash';
 import "./DetailQuiz.scss"
 import Question from "./Question";
 import ResultModal from "./ResultModal";
+import RightContent from "./Content/RightContent";
 
 const DetailQuiz = (props) => {
     const params = useParams();
@@ -109,60 +110,64 @@ const DetailQuiz = (props) => {
         }
         payload.answers = answers
         const res = await postSubmitQuiz(payload);
-        console.log("final payload: ", payload)
-        console.log(">>> check res ", res)
-        console.log(">>> check res DT: ", res.DT)
         if (res && res.EC === 0) {
             setResutData({
                 countCorrect: res.DT.countCorrect,
                 countTotal: res.DT.countTotal,
                 quizData: res.DT.quizData
             })
-            console.log(">>> check resultData: ", resultData)
             setIsShowModalResult(true)
         } else {
             alert("Error")
         }
     }
-    return (<div className="detail-quiz-container">
-        <div className="left-content">
-            <div className="title">
-                Quiz {quizId}: {location.state.quizTitle}
+    return (
+        <>
+            <div className="detail-quiz-container">
+                <div className="left-content">
+                    <div className="title">
+                        Quiz {quizId}: {location.state.quizTitle}
+                    </div>
+                    <hr />
+                    <div className="q-body"> <img src="" alt="" /></div>
+                    <div className="q-content">
+                        <Question
+                            index={index}
+                            handleCheckbox={handleCheckBox}
+                            data={dataQuiz
+                                && dataQuiz.length > 0
+                                ? dataQuiz[index]
+                                : []}
+                        />
+                    </div>
+                    <div className="footer">
+                        <button
+                            className="btn btn-secondary"
+                            disabled={index === 0}
+                            onClick={() => handlePrev()}>Prev</button>
+                        <button
+                            className="btn btn-primary ml-3"
+                            disabled={index === dataQuiz.length - 1}
+                            onClick={() => handleNext()}>Next</button>
+                        <button
+                            className="btn btn-warning"
+                            onClick={() => handleFinish()}>Finish</button>
+                    </div>
+                </div>
+                <div className="right-content">
+                    <RightContent
+                        dataQuiz={dataQuiz}
+                        handleFinish={handleFinish} />
+                </div>
+
             </div>
-            <hr />
-            <div className="q-body"> <img src="" alt="" /></div>
-            <div className="q-content">
-                <Question
-                    index={index}
-                    handleCheckbox={handleCheckBox}
-                    data={dataQuiz
-                        && dataQuiz.length > 0
-                        ? dataQuiz[index]
-                        : []}
-                />
-            </div>
-            <div className="footer">
-                <button
-                    className="btn btn-secondary"
-                    disabled={index === 0}
-                    onClick={() => handlePrev()}>Prev</button>
-                <button
-                    className="btn btn-primary ml-3"
-                    disabled={index === dataQuiz.length - 1}
-                    onClick={() => handleNext()}>Next</button>
-                <button
-                    className="btn btn-warning"
-                    onClick={() => handleFinish()}>Finish</button>
-            </div>
-        </div>
-        <div className="right-content">
-            count down
-        </div>
-        <ResultModal
-            show={isShowModalResult}
-            setShow={setIsShowModalResult}
-            resultData={resultData} />
-    </div>)
+
+            <ResultModal
+                show={isShowModalResult}
+                setShow={setIsShowModalResult}
+                resultData={resultData} />
+        </>
+    )
 
 }
 export default DetailQuiz;
