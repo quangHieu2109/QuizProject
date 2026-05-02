@@ -1,0 +1,11 @@
+{
+    "lang_name": "English",
+    "homepage": {
+        "title1": "There's the best way to ask...",
+        "title2": "You don't want to make a boring form. And your audiance won't answer one. Create a type form insted - and make everyone happy.",
+        "title3": {
+            "un_login": "Get started, it's free",
+            "logged_in": "Do quizzes now"
+        }
+    }
+}
